@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 const App = () => {
   return (
     <main className="app transition-all easi-in">
-      <div>hello</div>
       <Home />
       <Canvas />
       <Customizer />

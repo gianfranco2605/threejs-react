@@ -9,7 +9,7 @@ const CustomButton = ({ type, title, customStyles, handleClick }) => {
         if(type === 'filled') {
             return {
                 backgroundColor: snap.color,
-                color: '#fff'
+                color: '#a6a6a4'
             }
         }
     }
