@@ -34,14 +34,13 @@ const Home = () => {
               </h1>
             </motion.div>
             <motion.div {...headContentAnimation} className='flex flex-col gap-5'>
-              <p className='max-w-md font-normal text-gray-600 text-base '>Crea la tua camicia unica ed esclusiva con il nostro nuovissimo strumento di personalizzazione 3d. <strong>Scatena la tua immaginazione</strong>{" "}e definisci il tuo stile</p>
-
-              <CustomButton 
+            <CustomButton 
                 type="filled"
                 title="Personalizza"
                 handleClick={() => state.intro = false}
                 customStyles="w-fit px-4 py-2.5 font-bold text-sm"
                />
+              <p className='mt-20 max-w-md font-normal text-black text-lg '>Crea la tua camicia unica ed esclusiva con il nostro nuovissimo strumento di personalizzazione 3d. <strong>Scatena la tua immaginazione</strong>{" "}e definisci il tuo stile</p>
             </motion.div>
           </motion.div>
         </motion.section>
