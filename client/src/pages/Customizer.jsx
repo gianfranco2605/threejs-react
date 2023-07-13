@@ -24,6 +24,14 @@ const Customizer = () => {
     logoShirt: true,
     stylishShirt: false,
   })
+
+  const toggleEditorTab = (tabName) => {
+    if (activeEditorTab === tabName) {
+      setActiveEditorTab('');
+    } else {
+      setActiveEditorTab(tabName);
+    }
+  };
   // show tab content depending on the active tab
   const generateTabContent = () => {
     switch (activeEditorTab) {
@@ -36,9 +44,51 @@ const Customizer = () => {
           readFile={readFile}
         />
       case 'aipicker':
-        return <AIPicker />
+        return <AIPicker 
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImg={generatingImg}
+          handleSubmit={handleSubmit}
+        />
       default:
         return null;
+    }
+  }
+
+  // AI function 
+  // AI function 
+  const handleSubmit = async (type) => {
+    if(!prompt) return alert('Please enter a prompt')
+
+    try {
+      //call backend to generate a AI image
+      setGeneratingImg(true);
+
+      const response = await fetch('http://localhost:8080/api/v1/dalle/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt,
+        })
+      });
+      const data = await response.json();
+      console.log('Response data:', data); // Log the response data for debugging
+
+      if (response.ok) {
+        handleDecals(type, `data:image/png;base64,${data.photo}`);
+      } else {
+        console.error('Failed to fetch data:', data); // Log the error response
+        alert('Something went wrong');
+      }
+
+    } catch (error) {
+      console.error('Error:', error); // Log the catch block error
+      alert('Something went wrong');
+    } finally {
+      setGeneratingImg(false);
+      setActiveEditorTab("");
     }
   }
 
@@ -59,11 +109,20 @@ const Customizer = () => {
         break;
       case 'stylishShirt':
           state.isFullTexture = !activeFilterTab[tabName];
-        break  
+        break;  
       default:
         state.isLogoTexture = true;
         state.isFullTexture = false;
+        break;
     }
+
+    //after setting the state, activateFilterTab is updated
+    setActiveFilterTab((prevState => {
+      return {
+        ...prevState,
+        [tabName]: !prevState[tabName]
+      }
+    }))
   }
 
   const readFile = (type) => {
@@ -92,7 +151,7 @@ const Customizer = () => {
                   <Tab 
                     key={tab.name}
                     tab={tab}
-                    handleClick={() => setActiveEditorTab(tab.name)}
+                    handleClick={() => toggleEditorTab(tab.name)}
                   />
                 ))}
                 {generateTabContent()}
@@ -124,8 +183,8 @@ const Customizer = () => {
                     key={tab.name}
                     tab={tab}
                     isFilterTab
-                    isActiveTab=""
-                    handleClick={() => {}}
+                    isActiveTab={activeFilterTab[tab.name]}
+                    handleClick={() => handleActiveFilterTab(tab.name)}
                   />
                 ))}
             </motion.div>
