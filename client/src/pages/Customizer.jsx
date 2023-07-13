@@ -80,7 +80,7 @@ const Customizer = () => {
         handleDecals(type, `data:image/png;base64,${data.photo}`);
       } else {
         console.error('Failed to fetch data:', data); // Log the error response
-        alert('Something went wrong');
+        alert('We have to pay to generate AI images 😔');
       }
 
     } catch (error) {
